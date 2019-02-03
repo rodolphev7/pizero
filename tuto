@@ -1,0 +1,42 @@
+#Flash sd card with motioneye OS 
+#Write The OS Image
+
+All releases are available from here and are marked by date.
+
+    download the latest stable release called motioneyeos-[board]-yyyymmdd.img.gz, where [board] is the name of your board
+
+    extract the image file from the archive
+
+    write the image file to your SD card:
+
+    If you use Windows, just follow these instructions.
+
+    If you use Linux or OSX, there's a writeimage.sh script that will do everything for you, including the optional setup of a wireless network connection and setting a static IP address. Just run the script as follows (replacing the arguments with appropriate values):
+
+     ./writeimage.sh -d /dev/mmcblk0 -i "/path/to/motioneyeos.img"
+
+    note: specify the device path to the disk and not to some partition (e.g. /dev/mmcblk0 instead of /dev/mmcblk0p1)
+
+    You can preconfigure a wireless network connection:
+
+     ./writeimage.sh -d /dev/mmcblk0 -i "/path/to/motioneyeos.img" -n 'yournet:yourkey'
+
+    If you prefer a static IP instead of DHCP, just run the following command:
+
+     ./writeimage.sh -d /dev/mmcblk0 -i "/path/to/motioneyeos.img" -s "192.168.1.101/24:192.168.1.1:8.8.8.8"
+
+    Any other image writing method should work, including using the Unix dd command.
+
+If you are having problems using writeimage.sh try using https://etcher.io/ as mentioned in Issue #857
+#disable green (ACT) LED 
+# Set the Pi Zero ACT LED trigger to 'none'.
+echo none | sudo tee /sys/class/leds/led0/trigger
+
+# Turn off the Pi Zero ACT LED.
+echo 1 | sudo tee /sys/class/leds/led0/brightness
+
+To make these settings permanent, add the following lines to your Pi's /boot/config.txt file and reboot:
+
+# Disable the ACT LED on the Pi Zero.
+dtparam=act_led_trigger=none
+dtparam=act_led_activelow=on
